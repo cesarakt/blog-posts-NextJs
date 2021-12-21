@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import styles from './home.module.scss'
 import Head from 'next/head'
 import { SubscribeButton } from '../components/SubscribeButton'
