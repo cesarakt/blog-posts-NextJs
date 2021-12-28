@@ -13,7 +13,7 @@ export default NextAuth({
       }
     })
   ],
-  secret: process.env.SECRET_KEY,
+  //secret: process.env.SECRET_KEY,
   callbacks: {
     async signIn({ user, account, profile }) {
       const { email } = user
