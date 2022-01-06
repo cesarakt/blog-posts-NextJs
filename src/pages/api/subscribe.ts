@@ -1,6 +1,14 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { getSession } from 'next-auth/react'
+import { query as q } from 'faunadb'
+import { fauna } from '../../services/fauna'
 import { stripe } from '../../services/stripe'
+
+/*type User = {
+  ref: {
+    id: string
+  }
+}*/
 
 export default async function (
   request: NextApiRequest,
@@ -9,10 +17,22 @@ export default async function (
   if (request.method === 'POST') {
     const session = await getSession({ req: request })
 
+    /*const user = await fauna.query<User>(
+      q.Get(q.Match(q.Index('User_by_email'), q.Casefold(session.user.email)))
+    )*/
+
     const stripeCustomer = await stripe.customers.create({
       email: session.user.email
       // metadata
     })
+
+    /*await fauna.query(
+      q.Update(q.Ref(q.Collection('users'), user.ref.id), {
+        data: {
+          stripe_customer_id: stripeCustomer.id
+        }
+      })
+    )*/
 
     const stripeCheckoutSession = await stripe.checkout.sessions.create({
       customer: stripeCustomer.id,
